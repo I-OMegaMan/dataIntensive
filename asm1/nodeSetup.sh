@@ -1,4 +1,7 @@
 #!/bin/bash
+git clone git@github.com:I-OMegaMan/dataIntensive.git
+cd ~
+cd ./dataIntensive/asm1
 sudo apt-get install openjdk-8-jdk -y
 mkdir ~/hw1/
 cd ~/hw1/
