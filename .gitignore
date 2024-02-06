@@ -33,3 +33,5 @@
 
 #bash
 cluster.cfg
+master.cfg
+workers.cfg
