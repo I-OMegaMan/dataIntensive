@@ -17,7 +17,5 @@ if test ! -d ./hadoop-3.3.6; then
    wget $HADOOP_BIN_URL
    tar xvfz hadoop-3.3.6.tar.gz
 fi
-export HADOOP_HOME=$HADOOP_ROOT/hadoop-3.3.6
-export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 echo "THE HADOOP IS READY"
 
