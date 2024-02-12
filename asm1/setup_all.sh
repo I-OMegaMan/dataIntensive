@@ -16,7 +16,9 @@ cat $configScript | $masterSsh
 cat $format_master | $masterSsh
 echo "xml config setup for master $master"
 cat $xmlConfigScript | $masterSsh
-scp -i $sshId ./hadoopConfig/*.xml ${CLOUDLAB_USER}@/home/hadoop/
+scp -i $sshId ./hadoopConfig/*.xml ${CLOUDLAB_USER}@$masterNode:~/hadoop/config/
+echo "setting up salves file"
+scp -i $sshId ./workers.cfg ${CLOUDLAB_USER}@$masterNode:~/hadoop/config/slaves
 
 while IFS= read -r line
 do
@@ -26,6 +28,7 @@ do
     echo "xml config setup for ${line}"
     cat $xmlConfigScript | $workerSSH
     scp -i $sshId ./hadoopConfig/*.xml ${CLOUDLAB_USER}@$line:~/hadoop/config/
+    
 done < "$workers"
 #~/hw1/hadoop-3.3.6
 #hadoop is going to look for /bin/java so only give it the home directory

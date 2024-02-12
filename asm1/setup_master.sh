@@ -5,6 +5,7 @@ HADOOP_JAVA_PACKAGE=openjdk-8-jdk
 cd ~
 git clone https://github.com/I-OMegaMan/dataIntensive.git
 cd ./dataIntensive/asm1
+
 sudo apt update
 sudo apt-get install $HADOOP_JAVA_PACKAGE -y
 
