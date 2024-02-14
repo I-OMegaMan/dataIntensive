@@ -1,0 +1,12 @@
+Requirements:
+- updated apt-get
+- java installed
+- hadoop 3.3.6 downloaded
+- pdsh
+
+Instructions:
+- distribute config files to each node according to the instructions in the conf folders. Should be 1 master at node0, then the rest are slaves
+- on each node, issue "~/.bashrc"
+- on the master, issue "$HADOOP_HOME/bin/hdfs namenode -format" and enter "Y" when prompted.
+- on master, issue "$HADOOP_HOME/sbin start-all.sh"
+- once all the services are started, enter jps to confirm the services are running on all nodes. Also check the log files at $HADOOP_HOME/logs for errors
