@@ -62,7 +62,7 @@ done
 echo "Doing $1-specific setup"
 if [ "$1" = "master" ]; then
 	if ! [ -d $HADOOP_HOME/hadoop-dir/namenode-dir ]; then
-		mkdir -p $HADOOP_HOME/hadoop-dir/namenode-dir
+		mkdir -p ~/hadoop-dir/namenode-dir
 		echo "created namenode-dir"
 	fi
 	# format hdfs
@@ -70,7 +70,7 @@ if [ "$1" = "master" ]; then
 	
 elif [ "$1" = "slave" ]; then
 	if ! [ -d $HADOOP_HOME/hadoop-dir/datanode-dir ]; then
-		mkdir -p $HADOOP_HOME/hadoop-dir/datanode-dir
+		mkdir -p ~/hadoop-dir/datanode-dir
 		echo "created datanode-dir"
 	fi
 	
