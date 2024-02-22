@@ -66,6 +66,9 @@ if [ "$1" = "master" ]; then
 		echo "created namenode-dir"
 	fi
 	# format hdfs
+	
+	cd ~
+	# NOTE: the current directory at the time of running this is where hadoop will look for hadoop-dir/namenode-dir, hence the "cd ~"
 	$HADOOP_HOME/bin/hdfs namenode -format
 	
 elif [ "$1" = "slave" ]; then
