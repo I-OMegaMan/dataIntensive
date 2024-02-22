@@ -35,3 +35,4 @@
 cluster.cfg
 master.cfg
 workers.cfg
+user.cfg
