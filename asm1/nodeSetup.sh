@@ -29,7 +29,7 @@ export JAVA_HOME=/usr
 if ! [ -d ~/hadoop-3.3.6 ]; then
 	echo "Downloading Hadoop 3.3.6..."
 	# hadoop is going to look for /bin/java so only give it the home directory
-	wget -0 ~/hadoop-3.3.6.tar.gz https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
+	wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz -P ~
 	tar xvfz ~/hadoop-3.3.6.tar.gz
 fi
 
