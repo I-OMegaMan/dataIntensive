@@ -9,7 +9,6 @@ if [ "$#" -eq 1 ]; then
 	elif [ "$1" = "slave" ]; then
 		echo "Configuring node as slave."
 		CONFIG_FILES=$CONFIG_PATH/slave
-		mkdir -p ~/hadoop-dir/datanode-dir
 	else 
 		echo "Error: must provide \"master\" or \"slave\" as an argument."
 		exit
