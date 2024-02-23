@@ -19,6 +19,7 @@
 <configuration>
   <property>
     <name>dfs.datanode.data.dir</name>
-    <value>/mydata/myers/datanode-dir</value !-- for homework 2, put the data in mydata>                                                            
+    <value>/mydata/myers/datanode-dir</value>                                                            
+	<!--   for homework 2, put the data in mydata -->
   </property>
 </configuration>
