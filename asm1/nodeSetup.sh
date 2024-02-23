@@ -57,11 +57,14 @@ for filename in $CONFIG_FILES/*; do
 	cp $filename $HADOOP_CONFIG
 done
 
+# homework 2: change permissions of /mydata to create the name and data node directories
+sudo chmod 777 /mydata
+
 # master and slave specific setup
 echo "Doing $1-specific setup"
 if [ "$1" = "master" ]; then
 	if ! [ -d $HADOOP_HOME/hadoop-dir/namenode-dir ]; then
-		sudo mkdir -p /mydata/myers/namenode-dir	# for homework 2, put data in /mydata, which requires root privilege to be created
+		sudo mkdir -p /mydata/namenode-dir	# for homework 2, put data in /mydata, which requires root privilege to be created
 		echo "created namenode-dir"
 	fi
 	# format hdfs
@@ -72,7 +75,7 @@ if [ "$1" = "master" ]; then
 	
 elif [ "$1" = "slave" ]; then
 	if ! [ -d $HADOOP_HOME/hadoop-dir/datanode-dir ]; then
-		sudo mkdir -p /mydata/myers/datanode-dir	# for homework 2, put data in /mydata, which requires root privilege to be created
+		sudo mkdir -p /mydata/datanode-dir	# for homework 2, put data in /mydata, which requires root privilege to be created
 		echo "created datanode-dir"
 	fi
 	
