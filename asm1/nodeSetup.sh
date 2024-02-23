@@ -69,13 +69,16 @@ sudo chmod 777 /mydata/hadoop
 
 # configure master if needed
 if [ "$1" = "master" ]; then
-	$HADOOP_HOME/bin/hdfs namenode -format
 	# download the data
 	if ! [ -d /mydata/wikipedia_50GB ]; then
 		wget ftp://ftp.ecn.purdue.edu/puma/wikipedia_50GB.tar.bz2 -P /mydata/
 		tar xvjf /mydata/wikipedia_50GB.tar.bz2 -C /mydata/
 	fi
-	# move the data from the share folder into hdfs
+	
+	# format hdfs directory and start hdfs
+	$HADOOP_HOME/bin/hdfs namenode -format
+	$HADOOP_HOME/sbin/start-hdfs.sh
+	# upload data to hdfs
 	$HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/wikipedia_50GB /
 fi
 
