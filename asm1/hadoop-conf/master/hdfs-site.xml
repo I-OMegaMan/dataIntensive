@@ -19,6 +19,6 @@
 <configuration>
   <property>
     <name>dfs.namenode.name.dir</name>
-    <value>hadoop-dir/namenode-dir</value>
+    <value>/mydata/myers/namenode-dir</value !-- for homework 2, put the data in mydata>
   </property>
 </configuration>
