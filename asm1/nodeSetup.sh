@@ -59,26 +59,16 @@ done
 
 # homework 2: change permissions of /mydata to create the name and data node directories
 sudo chmod 777 /mydata
+if ! [ -d /mydata/hadoop ]; then
+	mkdir -p /mydata/hadoop	# for homework 2, put data in /mydata, which requires root privilege to be created
+	echo "created /mydata/hadoop"
+	sudo chmod 777 /mydata/hadoop
+fi
 
-# master and slave specific setup
-echo "Doing $1-specific setup"
+# configure master if needed
 if [ "$1" = "master" ]; then
-	if ! [ -d $HADOOP_HOME/hadoop-dir/namenode-dir ]; then
-		mkdir -p /mydata/namenode-dir	# for homework 2, put data in /mydata, which requires root privilege to be created
-		echo "created namenode-dir"
-	fi
-	# format hdfs
-	
 	cd ~
-	# NOTE: the current directory at the time of running this is where hadoop will look for hadoop-dir/namenode-dir, hence the "cd ~"
 	$HADOOP_HOME/bin/hdfs namenode -format
-	
-elif [ "$1" = "slave" ]; then
-	if ! [ -d $HADOOP_HOME/hadoop-dir/datanode-dir ]; then
-		mkdir -p /mydata/datanode-dir	# for homework 2, put data in /mydata, which requires root privilege to be created
-		echo "created datanode-dir"
-	fi
-	
 fi
 
 
