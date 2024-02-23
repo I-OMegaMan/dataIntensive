@@ -59,17 +59,32 @@ done
 
 # homework 2: change permissions of /mydata to create the name and data node directories
 sudo chmod 777 /mydata
-if ! [ -d /mydata/hadoop ]; then
-	mkdir -p /mydata/hadoop	# for homework 2, put data in /mydata, which requires root privilege to be created
-	echo "created /mydata/hadoop"
-	sudo chmod 777 /mydata/hadoop
+if [ -d /mydata/hadoop ]; then
+	rm -R /mydata/hadoop
 fi
+mkdir -p /mydata/hadoop	# for homework 2, put data in /mydata, which requires root privilege to be created
+echo "created /mydata/hadoop"
+sudo chmod 777 /mydata/hadoop
+
 
 # configure master if needed
 if [ "$1" = "master" ]; then
-	cd ~
 	$HADOOP_HOME/bin/hdfs namenode -format
+	# download the data
+	if ! [ -d /mydata/wikipedia_50GB ]; then
+		wget ftp://ftp.ecn.purdue.edu/puma/wikipedia_50GB.tar.bz2 -P /mydata/
+		tar xvjf /mydata/wikipedia_50GB.tar.bz2 -C /mydata/
+	fi
+	# move the data from the share folder into hdfs
+	$HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/wikipedia_50GB /
 fi
+
+
+
+
+
+
+
 
 
 
