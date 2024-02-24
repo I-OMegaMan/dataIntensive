@@ -35,7 +35,8 @@ xmlConfigScript="./hadoopConfig/xml_config.sh"
 #2. Download and install Hadoop
 #3. Clone this git repo onto the machine
 configScript="./setup_master.sh"
-
+configRemoteMaster="./remote_setup_master.sh"
+configRemoteSlave="./remote_setup_slave.sh"
 #remote directory locations
 #Config files need to be copied to this location
 #Note ~ resolves to THIS SHELL's home not the remote one so don't use it
@@ -47,25 +48,14 @@ hadoopEtc=$remoteHadoopDir/etc/hadoop/
 masterNode=$(head -n1 $master)
 echo "Setting up master $masterNode"
 masterSsh=$sshCmd$masterNode
-cat $configScript | $masterSsh
-#cat $format_master | $masterSsh
-
-#copy the config files to the hadoop etc folder
-#scp -i $sshId ./hadoopConfig/*.xml ${CLOUDLAB_USER}@$masterNode:$hadoopEtc
-#echo "setting up salves file"
-#scp -i $sshId ./workers.cfg ${CLOUDLAB_USER}@$masterNode:$hadoopEtc/workers
-#End of master config
-
+cat $configRemoteMaster | $masterSsh
 
 #WORKER CONFIG Set up each worker
 while IFS= read -r line
 do
     workerSSH=$sshCmd$line
     echo "setup for ${line}"
-    cat $configScript | $workerSSH
-    echo "xml config setup for ${line}"
-    cat $xmlConfigScript | $workerSSH
-    scp -i $sshId ./hadoopConfig/*.xml ${CLOUDLAB_USER}@$line:$hadoopEtc
+    cat $configRemoteSlave | $workerSSH
 done < "$workers"
 #end of worker setup
  
