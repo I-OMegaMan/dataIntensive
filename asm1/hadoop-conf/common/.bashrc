@@ -120,3 +120,8 @@ export JAVA_HOME=/usr
 export HADOOP_HOME=$HOME/hadoop-3.3.6
 export PATH=$JAVA_HOME/bin:$PATH
 export PDSH_RCMD_TYPE=ssh
+
+alias hdfs='$HADOOP_HOME/bin/hdfs'
+alias hadoop='$HADOOP_HOME/bin/hadoop'
+alias start-all='$HADOOP_HOME/sbin/start-all.sh'
+alias stop-all='$HADOOP_HOME/sbin/stop-all.sh'
