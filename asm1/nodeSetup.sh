@@ -81,16 +81,3 @@ if [ "$1" = "master" ]; then
 	# upload data to hdfs
 	$HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/wikipedia_50GB /
 fi
-
-
-
-
-
-
-
-
-
-
-
-
-
