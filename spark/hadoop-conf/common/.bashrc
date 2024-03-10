@@ -117,7 +117,8 @@ if ! shopt -oq posix; then
 fi
 
 export JAVA_HOME=/usr
-export HADOOP_HOME=$HOME/hadoop-3.3.6
+export HADOOP_HOME=$HOME/hadoop-3.2.0
+export SPARK_HOME=$HOME/spark-3.0.3-bin-hadoop3.2
 export PATH=$JAVA_HOME/bin:$PATH
 export PDSH_RCMD_TYPE=ssh
 
