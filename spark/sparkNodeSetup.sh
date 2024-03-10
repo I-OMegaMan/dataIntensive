@@ -1,7 +1,6 @@
 #!/bin/bash
 #Script for configuring a node for hadoop and spark
 
-
 CONFIG_PATH=~/dataIntensive/spark/hadoop-conf
 if [ "$#" -eq 1 ]; then
 	# select master or slave directory
@@ -41,7 +40,7 @@ fi
 # install spark compiled for 3.2.0
 if ! [ -d ~/spark-3.0.3-bin-hadoop3.2 ]; then
     echo "Downloading spark-3.0.3 and hadoop..."
-    wget https://archive.apache.org/dist/spark/spark-3.0.3/spark-3.0.3-bin-hadoop3.2.tgz-P ~
+    wget https://archive.apache.org/dist/spark/spark-3.0.3/spark-3.0.3-bin-hadoop3.2.tgz -P ~
     tar xvfz ~/spark-3.0.3-bin-hadoop3.2.tgz -C ~
 fi
 
@@ -74,9 +73,7 @@ done
 #copy all the spark config files.
 for filename in $CONFIG_PATH/spark/*; do
 	echo "Copying $filename"
-	if [ "$filename" != ".bashrc" ]; then
-		cp $filename $HADOOP_CONFIG
-	fi
+	cp $filename $SPARK_CONFIG
 done
 
 # homework 3: change permissions of /mydata to create the name and data node directories
@@ -98,8 +95,8 @@ if [ "$1" = "master" ]; then
 	# fi
 	
 	# format hdfs directory and start hdfs
-#	$HADOOP_HOME/bin/hdfs namenode -format
-#	$HADOOP_HOME/sbin/start-dfs.sh
+	$HADOOP_HOME/bin/hdfs namenode -format
+	$HADOOP_HOME/sbin/start-dfs.sh
 	# upload data to hdfs
 #	$HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/wikipedia_50GB /
 fi
