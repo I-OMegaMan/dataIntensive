@@ -76,6 +76,23 @@ for filename in $CONFIG_PATH/spark/*; do
 	cp $filename $SPARK_CONFIG
 done
 
+# install spark
+if ! [ -f ~/scala-2.12.12.deb ]; then
+    wget https://downloads.lightbend.com/scala/2.12.12/scala-2.12.12.deb -P ~
+    sudo dpkg -i ./scala-2.12.12.deb
+fi
+
+# download hibench
+if ! [ -d ~/HiBench ]; then
+    #install maven
+    sudo apt-get install maven
+    #install python2 required by hibench
+    sudo apt-get install python2
+    git clone https://github.com/Intel-bigdata/HiBench
+    cd ./HiBench
+    mvn -Dspark=3.0 -Dscala=2.12 clean package
+fi
+
 # homework 3: change permissions of /mydata to create the name and data node directories
 sudo chmod 777 /mydata
 if [ -d /mydata/hadoop ]; then

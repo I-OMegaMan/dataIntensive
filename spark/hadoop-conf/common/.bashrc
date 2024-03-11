@@ -120,6 +120,8 @@ export JAVA_HOME=/usr
 export HADOOP_HOME=$HOME/hadoop-3.2.0
 export SPARK_HOME=$HOME/spark-3.0.3-bin-hadoop3.2
 export PATH=$JAVA_HOME/bin:$PATH
+#export SCALA_HOME=/usr/local/share/scala
+#export PATH=$SCALA_HOME/bin:$PATH
 export PDSH_RCMD_TYPE=ssh
 
 alias hdfs='$HADOOP_HOME/bin/hdfs'
