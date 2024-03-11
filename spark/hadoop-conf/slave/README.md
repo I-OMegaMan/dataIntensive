@@ -1,0 +1,1 @@
+These files go on each slave node in $HADOOP_HOME/etc/hadoop
