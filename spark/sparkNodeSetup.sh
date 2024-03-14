@@ -79,18 +79,7 @@ done
 # install spark
 if ! [ -f ~/scala-2.12.12.deb ]; then
     wget https://downloads.lightbend.com/scala/2.12.12/scala-2.12.12.deb -P ~
-    sudo dpkg -i ./scala-2.12.12.deb
-fi
-
-# download hibench
-if ! [ -d ~/HiBench ]; then
-    #install maven
-    sudo apt-get install maven
-    #install python2 required by hibench
-    sudo apt-get install python2
-    git clone https://github.com/Intel-bigdata/HiBench
-    cd ./HiBench
-    mvn -Dspark=3.0 -Dscala=2.12 clean package
+    sudo dpkg -i ~/scala-2.12.12.deb
 fi
 
 # homework 3: change permissions of /mydata to create the name and data node directories
@@ -105,15 +94,18 @@ sudo chmod 777 /mydata/hadoop
 
 # configure master if needed
 if [ "$1" = "master" ]; then
-	# # download the data
-	# if ! [ -d /mydata/wikipedia_50GB ]; then
-	# 	wget ftp://ftp.ecn.purdue.edu/puma/wikipedia_50GB.tar.bz2 -P /mydata/
-	# 	tar xvjf /mydata/wikipedia_50GB.tar.bz2 -C /mydata/
-	# fi
-	
-	# format hdfs directory and start hdfs
-	$HADOOP_HOME/bin/hdfs namenode -format
-	$HADOOP_HOME/sbin/start-dfs.sh
-	# upload data to hdfs
-#	$HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/wikipedia_50GB /
+    # download hibench
+    # Only the master needs hibench
+    if ! [ -d ~/HiBench ]; then
+        #install maven
+        sudo apt-get install maven
+        #install python2 required by hibench
+        sudo apt-get install python2
+        git clone https://github.com/Intel-bigdata/HiBench
+        cd ~/HiBench
+        mvn -Dspark=3.0 -Dscala=2.12 clean package
+    fi
+    #only the namenode/master needs to be formatted
+    $HADOOP_HOME/bin/hdfs namenode -format
+    $HADOOP_HOME/sbin/start-dfs.sh
 fi
