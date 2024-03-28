@@ -15,4 +15,4 @@ https://nyu-cds.github.io/python-bigdata/03-spark/
 https://spark.apache.org/docs/latest/api/python/index.html
 https://whiteboxml.com/blog/hadoop-with-python-i-pyspark
 https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html
-
+https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
