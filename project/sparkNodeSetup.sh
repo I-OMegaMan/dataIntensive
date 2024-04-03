@@ -83,29 +83,10 @@ if ! [ -f ~/scala-2.12.12.deb ]; then
 fi
 
 # homework 3: change permissions of /mydata to create the name and data node directories
-sudo chmod 777 /mydata
-if [ -d /mydata/hadoop ]; then
-	rm -R /mydata/hadoop
-fi
-mkdir -p /mydata/hadoop	# for homework 3, put data in /mydata, which requires root privilege to be created
-echo "created /mydata/hadoop"
-sudo chmod 777 /mydata/hadoop
-
-
-# configure master if needed
-if [ "$1" = "master" ]; then
-    # download hibench
-    # Only the master needs hibench
-    if ! [ -d ~/HiBench ]; then
-        #install maven
-        sudo apt-get install maven
-        #install python2 required by hibench
-        sudo apt-get install python2
-        git clone https://github.com/Intel-bigdata/HiBench
-        cd ~/HiBench
-        mvn -Dspark=3.0 -Dscala=2.12 clean package
-    fi
-    #only the namenode/master needs to be formatted
-    $HADOOP_HOME/bin/hdfs namenode -format
-    $HADOOP_HOME/sbin/start-dfs.sh
-fi
+#sudo chmod 777 /mydata
+#if [ -d /mydata/hadoop ]; then
+#	rm -R /mydata/hadoop
+#fi
+#mkdir -p /mydata/hadoop	# for homework 3, put data in /mydata, which requires root privilege to be created
+#echo "created /mydata/hadoop"
+#sudo chmod 777 /mydata/hadoop
