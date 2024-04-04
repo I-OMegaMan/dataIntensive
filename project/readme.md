@@ -12,7 +12,6 @@ passwords in the database.
 
 
 # Approach
-
 A four node cluster using HDFS and map reduce will be used.
 The python programming language will be used to map and reduce 
 data from std as per:
@@ -31,7 +30,6 @@ A secret message was intercepted from a person of interest. A number of assumpti
 4. The data is within a single AES256 16 byte block.
 
 # Experimental Setup
-
 ## Hadoop/Spark Configuration
 The Hadoop/Spark setup used for this experiment will be based off the
 ../spark configuration of this git repository. A copy was made in this
@@ -39,9 +37,10 @@ directory to preserve the working code for assignment 3.
 
 ## HDFS and Map Reduce Job
 The text data from rockyou will be uploaded onto HDFS. From here, a
-python script will be used to first process the text into sha256. Next
-the sha256 data will be used as an AES key to attempt to crack a
-hardcoded aes block.
+python map script will be used to first process the text into
+sha256. Next, a reduce script will take the hash and attempt to crack
+the string. The reduce script will detect ascii encoding and if found, 
+will print the hash and the string.
 
 # References and Helpful Links
 https://hadoop.apache.org/docs/current/hadoop-streaming/HadoopStreaming.html
