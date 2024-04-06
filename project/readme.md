@@ -1,3 +1,9 @@
+# Authors
+
+Matt Myers
+
+Roarke Myers
+
 # Introduction
 ## Hadoop AES Dictionary Attack
 This project is designed to test various cyber-security concepts using
@@ -80,4 +86,6 @@ https://whiteboxml.com/blog/hadoop-with-python-i-pyspark
 https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html
 
 https://github.com/ohmybahgosh/RockYou2021.txt
-
+# Python Libraries used
+https://cryptography.io/en/latest/
+pip install cryptography
