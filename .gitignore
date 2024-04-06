@@ -36,3 +36,6 @@ cluster.cfg
 master.cfg
 workers.cfg
 user.cfg
+
+#rockyou, this file should not be put into git
+rockyou.txt
