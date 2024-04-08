@@ -21,20 +21,21 @@ class ICrypto:
 class aes256Crypto(ICrypto):
     def __init__(self, ):
         "docstring"
-        self.hasher = hashlib.sha256
+        self.hasher = hashlib.sha256()
         self.cipher = None
+        self.key = None
+        #in this code, our zero IV is a source of vulnerability 
+        #which will be exploited.
+        self.iv = bytes([0x00]*16)
     def makeKey(self, stringKey, iv=0):
-        key = self.hasher(stringKey)
-        self.cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
+        self.hasher.update(bytes(stringKey, 'utf-8'))
+        key = self.hasher.digest()
+        print(len(key))
+        self.cipher = Cipher(algorithms.AES(key), modes.CBC(self.iv))
         self.decrypt = self.cipher.decryptor()
-        pass
+        self.key = key
+        return(self.key)
     def encrypt(self, keyString) -> str :
         return(self.cipher.update(keyString) + self.cipher.finalize())
-        pass
     def decrypt(self, stringToDecrypt) -> str :
         return(self.decrypt.update(stringToDecrypt) + self.decrypt.finalize())
-        pass
-
-
-    
-
