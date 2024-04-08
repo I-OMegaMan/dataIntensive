@@ -39,3 +39,6 @@ user.cfg
 
 #rockyou, this file should not be put into git
 rockyou.txt
+
+#python
+__pycache__
