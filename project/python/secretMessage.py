@@ -7,8 +7,6 @@ import hashlib
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 #https://cryptography.io/en/latest/
 
-secretString = "cyprus2005"
-
 class ICrypto:
     def __init__(self, ):
         "docstring"
@@ -30,7 +28,7 @@ class aes256Crypto(ICrypto):
         #in this code, our zero IV is a source of vulnerability 
         #which will be exploited.
         self.iv = bytes([0x00]*16)
-    def makeKey(self, stringKey, iv=0):
+    def makeKey(self, stringKey):
         self.hasher.update(bytes(stringKey, 'utf-8'))
         key = self.hasher.digest()
         self.cipher = Cipher(algorithms.AES(key), modes.CBC(self.iv))
@@ -44,3 +42,9 @@ class aes256Crypto(ICrypto):
         return(self.encryptor.update(bytes(stringToEncrypt, 'utf-8'))) #+ self.encryptor.finalize())
     def decryptBytes(self, stringToDecrypt) -> str :
         return(self.decrypt.update(stringToDecrypt) + self.decrypt.finalize())
+
+def quickDecrypt(hashKey, encryptedText):
+    cipher = Cipher(algorithms.AES(hashKey), modes.CBC(bytes([0x00]*16)))
+    decrypt = cipher.decryptor()
+    return(decrypt.update(encryptedText) + decrypt.finalize())
+    
