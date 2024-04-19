@@ -2,7 +2,7 @@
 #Script for configuring a node for hadoop and spark
 
 CONFIG_PATH=~/dataIntensive/spark/hadoop-conf
-HADOOP_FS_LOC=~/mydata
+HADOOP_FS_LOC=/mydata
 if [ "$#" -eq 1 ]; then
 	# select master or slave directory
 	if [ "$1" = "master" ]; then
