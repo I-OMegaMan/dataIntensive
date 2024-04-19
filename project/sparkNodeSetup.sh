@@ -83,19 +83,23 @@ if ! [ -f ~/scala-2.12.12.deb ]; then
     sudo dpkg -i ~/scala-2.12.12.deb
 fi
 
+
+sudo chmod 777 /mydata
+if [ -d /mydata/hadoop ]; then
+	rm -R /mydata/hadoop
+fi
+mkdir -p /mydata/hadoop	# for homework 2, put data in /mydata, which requires root privilege to be created
+echo "created /mydata/hadoop"
+sudo chmod 777 /mydata/hadoop
+
+
 # configure master if needed
 if [ "$1" = "master" ]; then
-
-    #ensure the permissions are correctly set for the
-    #hdfs directory
-    sudo chmod 777 $HADOOP_FS_LOC
-    mkdir -p $HADOOP_FS_LOC
-    echo "created $HADOOP_FS_LOC"
-
     #if the dataset has not been downloaded, download it
-    if [ -d $HADOOP_FS_LOC/rockyou.txt ]; then
-	rm -R $HADOOP_FS_LOC/rockyou.txt
-        cd $HADOOP_FS_LOC
+    if [ -d $HADOOP_FS_LOC/rockyou ]; then
+	rm -R $HADOOP_FS_LOC/rockyou
+        mkdir -p $HADOOP_FS_LOC/rockyou
+        cd ./rockyou
         wget https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz
         gunzip ./rockyou.txt.gz
     fi
