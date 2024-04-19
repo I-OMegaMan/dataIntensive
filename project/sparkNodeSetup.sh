@@ -2,6 +2,7 @@
 #Script for configuring a node for hadoop and spark
 
 CONFIG_PATH=~/dataIntensive/spark/hadoop-conf
+HADOOP_FS_LOC=~/mydata
 if [ "$#" -eq 1 ]; then
 	# select master or slave directory
 	if [ "$1" = "master" ]; then
@@ -82,11 +83,24 @@ if ! [ -f ~/scala-2.12.12.deb ]; then
     sudo dpkg -i ~/scala-2.12.12.deb
 fi
 
-# homework 3: change permissions of /mydata to create the name and data node directories
-#sudo chmod 777 /mydata
-#if [ -d /mydata/hadoop ]; then
-#	rm -R /mydata/hadoop
-#fi
-#mkdir -p /mydata/hadoop	# for homework 3, put data in /mydata, which requires root privilege to be created
-#echo "created /mydata/hadoop"
-#sudo chmod 777 /mydata/hadoop
+# configure master if needed
+if [ "$1" = "master" ]; then
+
+    #ensure the permissions are correctly set for the
+    #hdfs directory
+    sudo chmod 777 $HADOOP_FS_LOC
+    mkdir -p $HADOOP_FS_LOC
+    echo "created $HADOOP_FS_LOC"
+
+    #if the dataset has not been downloaded, download it
+    if [ -d $HADOOP_FS_LOC/rockyou.txt ]; then
+	rm -R $HADOOP_FS_LOC/rockyou.txt
+        wget https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz
+        tar xvjf /mydata/rockyou.txt.gz -C /mydata/
+    fi
+    # format hdfs directory and start hdfs
+    $HADOOP_HOME/bin/hdfs namenode -format
+    $HADOOP_HOME/sbin/start-hdfs.sh
+    # upload data to hdfs
+    $HADOOP_HOME/bin/hadoop fs -copyFromLocal $HADOOP_FS_LOC/rockyou.txt /
+fi
