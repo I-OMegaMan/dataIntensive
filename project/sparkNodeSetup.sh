@@ -100,7 +100,7 @@ if [ "$1" = "master" ]; then
     fi
     # format hdfs directory and start hdfs
     $HADOOP_HOME/bin/hdfs namenode -format
-    $HADOOP_HOME/sbin/start-hdfs.sh
+    $HADOOP_HOME/sbin/start-dfs.sh
     # upload data to hdfs
     $HADOOP_HOME/bin/hadoop fs -copyFromLocal $HADOOP_FS_LOC/rockyou.txt /
 fi
