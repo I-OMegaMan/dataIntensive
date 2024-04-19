@@ -13,7 +13,7 @@ class TestCrypto(unittest.TestCase):
 
     def test_crypt(self):
         testCrypt = sm.aes256Crypto()
-        testKey = "I8pizza"
+        testKey = "i8pizza"
         print(f"key {testKey}: ", bytes(testCrypt.makeKey(testKey)).hex())
         testSecretMessage = "Ravioli Ravioli!"
         result = testCrypt.encrypt(testSecretMessage)
@@ -23,8 +23,8 @@ class TestCrypto(unittest.TestCase):
         decryptResult = testCrypt.decryptBytes(bytes(result))
         self.assertEqual(decryptResult.decode('utf-8'),testSecretMessage)
     def test_quick(self):
-        hashBytes = bytes.fromhex("6cf13b8f64a910473727177ed4fcfcb9f279b00d005e4738c0e237a4cd8496b3")
-        hashEnc = bytes.fromhex("d892c6718a7af2cd14a9f6056795279b")
+        hashBytes = bytes.fromhex("63359cf25e20abc6eb2dcad3d32e1c7c113a0be00bc2b9a930e02add704dd508")
+        hashEnc = bytes.fromhex("c2843aa1e53c8089486cee9d28c42789")
         self.assertEqual(sm.quickDecrypt(hashBytes,hashEnc), b"Ravioli Ravioli!")
 
 
