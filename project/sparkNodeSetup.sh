@@ -95,8 +95,9 @@ if [ "$1" = "master" ]; then
     #if the dataset has not been downloaded, download it
     if [ -d $HADOOP_FS_LOC/rockyou.txt ]; then
 	rm -R $HADOOP_FS_LOC/rockyou.txt
-        wget https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz
-        tar xvjf /mydata/rockyou.txt.gz -C /mydata/
+        cd $HADOOP_FS_LOC
+        wget https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz
+        gunzip ./rockyou.txt.gz
     fi
     # format hdfs directory and start hdfs
     $HADOOP_HOME/bin/hdfs namenode -format
