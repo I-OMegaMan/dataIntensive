@@ -90,6 +90,9 @@ fi
 mkdir -p /mydata/hadoop         # for homework 2, put data in /mydata, which requires root privilege to be created
 echo "created /mydata/hadoop"
 sudo chmod 777 /mydata/hadoop
+# ensure the mapper and reducer scripts have the correct permissions
+sudo chmod 777 ~/dataIntensive/project/python/mapper.py
+sudo chmod 777 ~/dataIntensive/project/python/reducer.py
 
 
 # configure master if needed
