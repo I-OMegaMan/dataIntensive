@@ -4,21 +4,20 @@
 CONFIG_PATH=~/dataIntensive/spark/hadoop-conf
 HADOOP_FS_LOC=/mydata
 if [ "$#" -eq 1 ]; then
-	# select master or slave directory
-	if [ "$1" = "master" ]; then
-		echo "Configuring node as master."
-		CONFIG_FILES=$CONFIG_PATH/master
-		
-	elif [ "$1" = "slave" ]; then
-		echo "Configuring node as slave."
-		CONFIG_FILES=$CONFIG_PATH/slave
-	else 
-		echo "Error: must provide \"master\" or \"slave\" as an argument."
-		exit
-	fi
+        # select master or slave directory
+        if [ "$1" = "master" ]; then
+                echo "Configuring node as master."
+                CONFIG_FILES=$CONFIG_PATH/master
+        elif [ "$1" = "slave" ]; then
+                echo "Configuring node as slave."
+                CONFIG_FILES=$CONFIG_PATH/slave
+        else
+                echo "Error: must provide \"master\" or \"slave\" as an argument."
+                exit
+        fi
 else
-	echo "Usage: $0 (master | slave)"
-	exit
+        echo "Usage: $0 (master | slave)"
+        exit
 fi
 
 # update apt
@@ -32,10 +31,10 @@ export JAVA_HOME=/usr
 
 #install hadoop
 if ! [ -d ~/hadoop-3.2.0 ]; then
-	echo "Downloading Hadoop 3.2.0..."
-	# hadoop is going to look for /bin/java so only give it the home directory
-	wget https://archive.apache.org/dist/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz -P ~
-	tar xvfz ~/hadoop-3.2.0.tar.gz -C ~
+        echo "Downloading Hadoop 3.2.0..."
+        # hadoop is going to look for /bin/java so only give it the home directory
+        wget https://archive.apache.org/dist/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz -P ~
+        tar xvfz ~/hadoop-3.2.0.tar.gz -C ~
 fi
 
 # install spark compiled for 3.2.0
@@ -58,23 +57,23 @@ chmod +x ~/.bashrc
 
 #copy all the hadoop xml files.
 for filename in $CONFIG_PATH/common/*; do
-	echo "Copying $filename"
-	if [ "$filename" != ".bashrc" ]; then
-		cp $filename $HADOOP_CONFIG
-	fi
+        echo "Copying $filename"
+        if [ "$filename" != ".bashrc" ]; then
+                cp $filename $HADOOP_CONFIG
+        fi
 done
 
 # copy config files (master or slave)
 echo "Copying $1 config files"
 for filename in $CONFIG_FILES/*; do
-	echo "Copying $filename"
-	cp $filename $HADOOP_CONFIG
+        echo "Copying $filename"
+        cp $filename $HADOOP_CONFIG
 done
 
 #copy all the spark config files.
 for filename in $CONFIG_PATH/spark/*; do
-	echo "Copying $filename"
-	cp $filename $SPARK_CONFIG
+        echo "Copying $filename"
+        cp $filename $SPARK_CONFIG
 done
 
 # install spark
@@ -86,9 +85,9 @@ fi
 
 sudo chmod 777 /mydata
 if [ -d /mydata/hadoop ]; then
-	rm -R /mydata/hadoop
+        rm -R /mydata/hadoop
 fi
-mkdir -p /mydata/hadoop	# for homework 2, put data in /mydata, which requires root privilege to be created
+mkdir -p /mydata/hadoop         # for homework 2, put data in /mydata, which requires root privilege to be created
 echo "created /mydata/hadoop"
 sudo chmod 777 /mydata/hadoop
 
@@ -96,10 +95,10 @@ sudo chmod 777 /mydata/hadoop
 # configure master if needed
 if [ "$1" = "master" ]; then
     #if the dataset has not been downloaded, download it
-    if [ -d $HADOOP_FS_LOC/rockyou ]; then
-	rm -R $HADOOP_FS_LOC/rockyou
-        mkdir -p $HADOOP_FS_LOC/rockyou
-        cd ./rockyou
+    if [ -d /mydata/rockyou ]; then
+        rm -R /mydata/rockyou
+        mkdir -p /mydata/rockyou
+        cd /mydata/rockyou
         wget https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz
         gunzip ./rockyou.txt.gz
     fi
@@ -107,5 +106,5 @@ if [ "$1" = "master" ]; then
     $HADOOP_HOME/bin/hdfs namenode -format
     $HADOOP_HOME/sbin/start-dfs.sh
     # upload data to hdfs
-    $HADOOP_HOME/bin/hadoop fs -copyFromLocal $HADOOP_FS_LOC/rockyou.txt /
+    $HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/rockyou/rockyou.txt /
 fi
