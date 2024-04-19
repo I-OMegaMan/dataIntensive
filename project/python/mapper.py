@@ -4,7 +4,6 @@
 #https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
 import sys
 import hashlib
-import secretMessage as sm
 import io
 input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='ISO-8859-15')
 #Ravioli Ravioli!
@@ -21,5 +20,5 @@ for line in input_stream:
     # what we output here will be the input for the
     # Reduce step, i.e. the input for reducer.py
     #print("%s\t%s" % (bytes(h.hexdigest()).hex(), 1))
-    decryptRes = sm.quickDecrypt(bytes.fromhex(h.hexdigest()),theSecretMessage)
-    print("%s\t%s" % (line, decryptRes.hex()))
+    #decryptRes = sm.quickDecrypt(bytes.fromhex(h.hexdigest()),theSecretMessage)
+    print("%s" % h.hexdigest())
