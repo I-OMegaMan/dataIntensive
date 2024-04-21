@@ -105,6 +105,30 @@ To avoid errors, follow the procedure in the exact order as shown:
 2. For the namenode, ssh into the node and copy and paste the contents of
    ./remote_setup_master.sh
 
+## Verification of Setup
+1. ssh into the namenode (node0) and type $HADOOP_HOME/sbin/stop-all.sh
+2. Ensure the command runs and all namenodes are stopped.
+3. type $HADOOP_HOME/sbin/start-dfs.sh, ensure hdfs starts without errors.
+4. type $HADOOP_HOME/sbin/start-yarn.sh, ensure yarn starts without errors.
+5. type $HADOOP_HOME/bin/hadoop fs -ls / ensure /rockyou.txt exists on hdfs.
+
+Note: A common issue is that rockyou.txt did not get copied to hdfs in the setup script.
+If this occurs copy rockyou.txt to hdfs using $HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/rockyou/rockyou.txt /
+Any other issues can be debugged using the logs located in $HADOOP_HOME/logs.
+
+## Executing the Experiment
+### Single CPU Run
+1. On your local machine download rockyou.txt to ./rockyou/
+2. Call time ./python/testMapper.sh.
+3. Allow execution to finish. Record the resulting time.
+### Two node cluster.
+1. ssh into the cluster namenode (node0).
+2. open $HADOOP_HOME/etc/workers in your editer of choice.
+3. Ensure only node1 appears $HADOOP_HOME/etc/workers.
+4. Save and close $HADOOP_HOME/etc/workers.
+5. Follow the Verification of Setup proceedure above and ensure no errors occur.
+
+
 
 
 ## Experimental Setup
