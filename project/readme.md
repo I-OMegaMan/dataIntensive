@@ -154,6 +154,7 @@ The
 4. 4 Node cluster with hadoop and different reducer thread sizes.
 
 | Configuration                   | Time to Complete |
+|---------------------------------|------------------|
 | Single computer (no hadoop)     | 30+ Minutes      |
 | 2 Node cluster                  | 27m 1s           |
 | 4 Node cluster with hadoop      | 20m 38s          |
