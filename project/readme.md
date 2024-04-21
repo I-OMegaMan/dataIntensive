@@ -124,18 +124,20 @@ Any other issues can be debugged using the logs located in $HADOOP_HOME/logs.
 ### Two node cluster.
 1. ssh into the cluster namenode (node0).
 2. open $HADOOP_HOME/etc/workers in your editer of choice.
-3. Ensure only node1 appears $HADOOP_HOME/etc/workers.
+3. Ensure only node1 appears $HADOOP_HOME/etc/workers
 4. Save and close $HADOOP_HOME/etc/workers.
 5. Follow the Verification of Setup proceedure above and ensure no errors occur.
+6. Start the map Reduce job by calling ./project_run.sh. NOTE: if desired, edit -D mapred.reduce.tasks=N to set the number of reducer tasks.
+6. When the map reduce job completes, copy the console output to a file on your local machine.
+7. Copy the results from HDFS to the namenode drive using the command:
+   $HADOOP_HOME/bin/hadoop fs -copyFromLocal /rockout/*
+8. Examine or copy the results from the namenode.
+### Four or N node cluster.
+1. Follow the steps above with the exception of adding each datanode host name to $HADOOP_HOME/etc/workers (steps 3-4).
 
+# Results
+The experiment was run in the following configurations
 
-
-
-## Experimental Setup
-## Hadoop/Spark Configuration
-The Hadoop/Spark setup used for this experiment will be based off the
-../spark configuration of this git repository. A copy was made in this
-directory to preserve the working code for assignment 3.
 
 ## HDFS and Map Reduce Job
 The text data from rockyou will be uploaded onto HDFS. From here, a
@@ -144,9 +146,21 @@ sha256. Next, a reduce script will take the hash and attempt to crack
 the string. The reduce script will detect ascii encoding and if found, 
 will print the hash and the string.
 
-# Evaluation Methodology
-The time to crack the 16 byte AES block will be a figure of merit for this experiment.
-This time will be measured by gauging how long it takes to complete the map reduce job.
+# Results
+The 
+1. Single computer without hadoop
+2. 2 Node cluster with hadoop.
+3. 4 Node cluster with hadoop.
+4. 4 Node cluster with hadoop and different reducer thread sizes.
+
+| Configuration                   | Time to Complete |
+| Single computer (no hadoop)     | 30+ Minutes      |
+| 2 Node cluster                  | 27m 1s           |
+| 4 Node cluster with hadoop      | 20m 38s          |
+| 4 Node cluster with hadoop T=12 | 2m 31s           |
+| 4 Node cluster with hadoop T=24 | 1m 47s           |
+| 4 Node cluster with hadoop T=48 | 1m 57s           |
+
 
 
 # Problems
