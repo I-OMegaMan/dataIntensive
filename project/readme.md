@@ -49,16 +49,63 @@ of this writing, 2024) to be secure. The output of a SHA256 hash is 32
 bytes, which makes it perfect for generating 32 byte AES256 secret
 keys.
 
-## Approach
-A four node cluster using HDFS and map reduce will be used
-The python programming language will be used to map and reduce 
-data from std as per:
+## About Hadoop and Mapreduce
+Hadoop is an Apache foundation implementation of the map reduce
+algorithm (orginally by Google) paired with a distributed file system
+called HDFS (Hadoop Filesystem).  Hadoop allows for consumer grade
+computers to be joined together to form a powerful and robust
+distributed computing platform. Hadoop is written in the Java
+programming language but provides API and interfaces for virtually any
+language.
 
+A streaming API is included in Hadoop which allows data being
+processed to be read and written from stdin. This results in a simple
+interface which is very similar to piping commands in bash or
+powershell.
+
+# High Level Approach
+A mapper and reducer python script were written to use the Hadoop
+streaming interface. Hadoop feeds each password string from
+rockyou.txt to the mapper script takes the SHA256 of each password in
+the rockyou.txt and outputs the 32 byte result as a string into the
+reducer script. The reducer script takes the 32 byte SHA256 and
+attempts to crack the 16 byte encrypted message. Since the string is
+known to be ascii encoded, an ascii decode is attempted on the
+decrytped string. Any successful ascii decode result is printed as a
+result. The output buffer is small enough that a human can visually
+inspect the decoded data to see if any message is human readable.
+
+## Cluster Configuration
+The following configurations are used for this experiment:
+1. Single computer without hadoop
+2. 2 Node cluster with hadoop.
+3. 4 Node cluster with hadoop.
+4. 4 Node cluster with hadoop and different reducer thread sizes.
 https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
-
-and 
-
 https://hadoop.apache.org/docs/current/hadoop-streaming/HadoopStreaming.html
+
+# Setup Instructions
+## Hardware Requirements
+1. Ubuntu 22.04 with root access.
+2. A drive of at-least 100Gb, mounted to the root directory at /mydata.
+3. Each node in the cluster must share an ssh key with one another.
+   This means each node can access the other node.
+4. Python 3.10+ Installed.
+5. Full internet access and access to ubuntu repositories.
+6. For ease of implementation set the hostname of the master node
+   (namenode) to node0 and the workers to node1, node2, and node3
+   respectively.
+7. Git installed on all hardware.
+
+
+## Setup Procedure
+To avoid errors, follow the procedure in the exact order as shown:
+1. For each worker node, ssh into the node and copy and paste
+   the contents of ./remote_setup_slave.sh.
+2. For the namenode, ssh into the node and copy and paste the contents of
+   ./remote_setup_master.sh
+
+
 
 ## Experimental Setup
 ## Hadoop/Spark Configuration
