@@ -5,10 +5,8 @@
 import sys
 import hashlib
 import io
+#Handles input encoding
 input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='ISO-8859-15')
-#Ravioli Ravioli!
-theSecretMessage = bytes.fromhex("d892c6718a7af2cd14a9f6056795279b")
-
 
 # input comes from STDIN (standard input)
 for line in input_stream:
@@ -19,6 +17,4 @@ for line in input_stream:
     # write the results to STDOUT (standard output);
     # what we output here will be the input for the
     # Reduce step, i.e. the input for reducer.py
-    #print("%s\t%s" % (bytes(h.hexdigest()).hex(), 1))
-    #decryptRes = sm.quickDecrypt(bytes.fromhex(h.hexdigest()),theSecretMessage)
     print("%s" % h.hexdigest())
