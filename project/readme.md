@@ -147,11 +147,6 @@ the string. The reduce script will detect ascii encoding and if found,
 will print the hash and the string.
 
 # Results
-The 
-1. Single computer without hadoop
-2. 2 Node cluster with hadoop.
-3. 4 Node cluster with hadoop.
-4. 4 Node cluster with hadoop and different reducer thread sizes.
 
 | Configuration                   | Time to Complete |
 |---------------------------------|------------------|
@@ -162,32 +157,41 @@ The
 | 4 Node cluster with hadoop T=24 | 1m 47s           |
 | 4 Node cluster with hadoop T=48 | 1m 57s           |
 
+Note: T denotes the number of reducer threads used.
 
+# Discussion of Results
+The dictionary attack script completed successfully in each
+configuration. A dramatic increase in completion speed can be seen as
+the number of nodes used increases along with the number of reducer
+threads used. Diminishing returns are observed once the number of
+reducer threads is increased beyond 12. This is likely due to the
+number of threads increasing beyond the number of cores, eventually
+resulting in an increase in time in the case of T=48.
 
-# Problems
-Originally the setup was going to use a Map only hadoop job but we
-decided to break the project into a mapping sha256 task and a reducing
-aes crack task.
-
-
-
+# Future Work and Improvements
+Python is a convenient language but is notoriously slow. The scripts
+could be optimized by using a generator instead of the "for line in
+stdin". The mapper and reducer could also be written in optimized C to
+see if additional speed increases could be acheived.
 
 # References and Helpful Links
+Description of the Hadoop streaming interface:
 https://hadoop.apache.org/docs/current/hadoop-streaming/HadoopStreaming.html
 
+Using python with the hadoop streaming interface:
 https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
 
-https://nyu-cds.github.io/python-bigdata/03-spark/
+Original Rockyou.txt dictionary:
+https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz
 
-https://spark.apache.org/docs/latest/api/python/index.html
-
-https://whiteboxml.com/blog/hadoop-with-python-i-pyspark
-
-https://spark.apache.org/docs/latest/api/python/getting_started/quickstart_connect.html
-
+100GB version of rockyou.txt:
 https://github.com/ohmybahgosh/RockYou2021.txt
 
-https://hadoop.apache.org/docs/r1.2.1/streaming.html
-# Python Libraries used
+Link to the original github:
+https://github.com/I-OMegaMan/dataIntensive/tree/main/project
+
+
+# Python Libraries used:
+cryptography, for aes256 encryption:
 https://cryptography.io/en/latest/
-pip install cryptography
+
