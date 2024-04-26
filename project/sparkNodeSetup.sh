@@ -1,23 +1,30 @@
 #!/bin/bash
 #Script for configuring a node for hadoop and spark
+#Script Assumptions:
+#-Ubuntu or debian-like OS.
+#-A 10GB > drive mounted at /mydata
+#-git installed on system
+#-python > v3.10 installed on the system
+#Note: This script was originally designed to run
+#on cloudlab.
 
 CONFIG_PATH=~/dataIntensive/spark/hadoop-conf
-HADOOP_FS_LOC=/mydata
+
 if [ "$#" -eq 1 ]; then
-        # select master or slave directory
-        if [ "$1" = "master" ]; then
-                echo "Configuring node as master."
-                CONFIG_FILES=$CONFIG_PATH/master
-        elif [ "$1" = "slave" ]; then
-                echo "Configuring node as slave."
-                CONFIG_FILES=$CONFIG_PATH/slave
-        else
-                echo "Error: must provide \"master\" or \"slave\" as an argument."
-                exit
-        fi
-else
-        echo "Usage: $0 (master | slave)"
+    # select master or slave directory
+    if [ "$1" = "master" ]; then
+        echo "Configuring node as master."
+        CONFIG_FILES=$CONFIG_PATH/master
+    elif [ "$1" = "slave" ]; then
+        echo "Configuring node as slave."
+        CONFIG_FILES=$CONFIG_PATH/slave
+    else
+        echo "Error: must provide \"master\" or \"slave\" as an argument."
         exit
+    fi
+else
+    echo "Usage: $0 (master | slave)"
+    exit
 fi
 
 # update apt
@@ -31,10 +38,10 @@ export JAVA_HOME=/usr
 
 #install hadoop
 if ! [ -d ~/hadoop-3.2.0 ]; then
-        echo "Downloading Hadoop 3.2.0..."
-        # hadoop is going to look for /bin/java so only give it the home directory
-        wget https://archive.apache.org/dist/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz -P ~
-        tar xvfz ~/hadoop-3.2.0.tar.gz -C ~
+    echo "Downloading Hadoop 3.2.0..."
+    # hadoop is going to look for /bin/java so only give it the home directory
+    wget https://archive.apache.org/dist/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz -P ~
+    tar xvfz ~/hadoop-3.2.0.tar.gz -C ~
 fi
 
 # install spark compiled for 3.2.0
@@ -57,23 +64,23 @@ chmod +x ~/.bashrc
 
 #copy all the hadoop xml files.
 for filename in $CONFIG_PATH/common/*; do
-        echo "Copying $filename"
-        if [ "$filename" != ".bashrc" ]; then
-                cp $filename $HADOOP_CONFIG
-        fi
+    echo "Copying $filename"
+    if [ "$filename" != ".bashrc" ]; then
+        cp $filename $HADOOP_CONFIG
+    fi
 done
 
 # copy config files (master or slave)
 echo "Copying $1 config files"
 for filename in $CONFIG_FILES/*; do
-        echo "Copying $filename"
-        cp $filename $HADOOP_CONFIG
+    echo "Copying $filename"
+    cp $filename $HADOOP_CONFIG
 done
 
 #copy all the spark config files.
 for filename in $CONFIG_PATH/spark/*; do
-        echo "Copying $filename"
-        cp $filename $SPARK_CONFIG
+    echo "Copying $filename"
+    cp $filename $SPARK_CONFIG
 done
 
 # install spark
@@ -85,7 +92,7 @@ fi
 
 sudo chmod 777 /mydata
 if [ -d /mydata/hadoop ]; then
-        rm -R /mydata/hadoop
+    rm -R /mydata/hadoop
 fi
 mkdir -p /mydata/hadoop         # for homework 2, put data in /mydata, which requires root privilege to be created
 echo "created /mydata/hadoop"
