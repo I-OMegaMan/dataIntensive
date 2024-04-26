@@ -81,8 +81,6 @@ The following configurations are used for this experiment:
 2. 2 Node cluster with hadoop.
 3. 4 Node cluster with hadoop.
 4. 4 Node cluster with hadoop and different reducer thread sizes.
-https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
-https://hadoop.apache.org/docs/current/hadoop-streaming/HadoopStreaming.html
 
 # Setup Instructions
 ## Hardware Requirements
