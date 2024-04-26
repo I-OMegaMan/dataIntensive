@@ -174,18 +174,23 @@ see if additional speed increases could be acheived.
 
 # References and Helpful Links
 Description of the Hadoop streaming interface:
+
 https://hadoop.apache.org/docs/current/hadoop-streaming/HadoopStreaming.html
 
 Using python with the hadoop streaming interface:
+
 https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
 
 Original Rockyou.txt dictionary:
+
 https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz
 
 100GB version of rockyou.txt:
+
 https://github.com/ohmybahgosh/RockYou2021.txt
 
 Link to the original github:
+
 https://github.com/I-OMegaMan/dataIntensive/tree/main/project
 
 
