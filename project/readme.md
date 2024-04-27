@@ -8,47 +8,32 @@ Roarke Myers
 
 ## Hadoop Distributed Dictionary Attack: Overview
 This project performs a distributed dictionary attack on an AES256
-encrypted message using the Hadoop Filesystem and Map reduce
+encrypted message using the Hadoop Filesystem and MapReduce
 framework. Different configurations are used to test how fast the
 setup can crack the secret message.
 
 The database used for the dictionary attack is a large set of
 previously hacked/leaked real user passwords called rockyou.txt
 (https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz). The
-database is commonly used for password strength testing and
-pen-testing.
+database is commonly used for password strength testing and pen-testing.
 
 ## Objective
-Create a map reduce job which reads cracked passwords from a text
+Create a MapReduce job which reads cracked passwords from a text
 database and produces an output list of possible ASCII encoded text
 within an AES256 encrypted block. The map reduce job will be run in a
 variety of situations to experiment with performance.
-
-## Assumptions and Scenario
-A secret message was intercepted from a person of interest. Recon on
-the target produced a number of assumptions that can be made about
-this secret message:
-
-1. The message contains ASCII text.
-2. The AES initialization vector is zero.
-3. AES key selected for this encryption is based on the sha256 of a string in the rockyou password database.
-4. The data is within a single AES256 16 byte block.
-
-In practice this scenario is somewhat realistic since AES256 keys are
-often the sha256 of some string known by the programmer. This is
-considered an incredibly sloppy practice.
 
 ## About AES256 and SHA256
 AES256 is a symmetric encryption algorithm meaning it relies on a
 single secret key known by both the sender and receiver. SHA256 is a
 fast hashing algorithm that is widely used and considered (at the time
-of this writing, 2024) to be secure. The output of a SHA256 hash is 32
-bytes, which makes it perfect for generating 32 byte AES256 secret
-keys.
+of this writing, 2024) to be secure, meaning there are no mathematical
+means to reverse the hash. SHA256 produces a 32 byte hash which makes
+it perfect for generating 32 byte AES256 secret keys.
 
-## About Hadoop and Mapreduce
-Hadoop is an Apache foundation implementation of the map reduce
-algorithm (originally by Google) paired with a distributed file system
+## About Hadoop and MapReduce
+Hadoop is an Apache foundation implementation of the MapReduce
+algorithm (originally by Google) paired with a distributed filesystem
 called HDFS (Hadoop Filesystem).  Hadoop allows for consumer grade
 computers to be joined together to form a powerful and robust
 distributed computing platform. Hadoop is written in the Java
@@ -60,12 +45,29 @@ processed to be read and written from stdin. This results in a simple
 interface which is very similar to piping commands in bash or
 powershell.
 
-# High Level Approach
+## Assumptions and Scenario
+A secret message "c2843aa1e53c8089486cee9d28c42789" was intercepted
+from a person of interest. Recon on the target produced a number of
+assumptions that can be made about this secret message:
+
+1. The message contains ASCII text.
+2. The AES initialization vector is zero.
+3. AES key selected for this encryption is based on the SHA256 of a string in the rockyou password database.
+4. The data is within a single AES256 16 byte block.
+
+In practice this scenario is somewhat realistic since AES256 keys are
+often the SHA256 of some string known by the programmer. This is an
+incredibly sloppy practice but will allow this experiment to finish
+before the sun burns out.
+
+## Mapper and Reducer Scripts
 A mapper and reducer python script were written to use the Hadoop
 streaming interface. Hadoop feeds each password string from
 rockyou.txt to the mapper script takes the SHA256 of each password in
 the rockyou.txt and outputs the 32 byte result as a string into the
-reducer script. The reducer script takes the 32 byte SHA256 and
+reducer script. 
+
+The reducer script takes the 32 byte SHA256 and
 attempts to crack the 16 byte encrypted message. Since the string is
 known to be ascii encoded, an ascii decode is attempted on the
 decrypted string. Any successful ascii decode result is printed as a
@@ -79,14 +81,17 @@ The experiment was run in the following configurations:
 3. 4 Node cluster: A Hadoop Namenode with three datanodes.
 4. 4 Nodes with Varying reducer threads: Increasing the number of
    reducer threads.
-   
+
+The cloud provider, cloudlab, is used for this experiment.
+(https://www.cloudlab.us/).
+
 # Setup Instructions
 ## Hardware Requirements
 1. Ubuntu 22.04 with root access.
-2. A drive of at-least 100Gb, mounted to the root directory at /mydata.
+2. A drive of at-least 100GB, mounted to the root directory at /mydata.
 3. Each node in the cluster must share an ssh key with one another.
    This means each node can access the other node.
-4. Python 3.10+ Installed.
+4. Python 3.10+ Installed on each machine.
 5. Full internet access and access to ubuntu repositories.
 6. For ease of implementation set the hostname of the master node
    (namenode) to node0 and the workers to node1, node2, and node3
@@ -118,12 +123,12 @@ Any other issues can be debugged using the logs located in $HADOOP_HOME/logs.
 3. Allow execution to finish. Record the resulting time.
 ### Two node cluster.
 1. ssh into the cluster namenode (node0).
-2. open $HADOOP_HOME/etc/workers in your editer of choice.
+2. open $HADOOP_HOME/etc/workers in your editor of choice.
 3. Ensure only node1 appears $HADOOP_HOME/etc/workers
 4. Save and close $HADOOP_HOME/etc/workers.
-5. Follow the Verification of Setup proceedure above and ensure no errors occur.
-6. Start the map Reduce job by calling ./project_run.sh. NOTE: if desired, edit -D mapred.reduce.tasks=N to set the number of reducer tasks.
-6. When the map reduce job completes, copy the console output to a file on your local machine.
+5. Follow the Verification of Setup procedure above and ensure no errors occur.
+6. Start the MapReduce job by calling ./project_run.sh. NOTE: if desired, edit -D mapred.reduce.tasks=N to set the number of reducer tasks.
+6. When the MapReduce job completes, copy the console output to a file on your local machine.
 7. Copy the results from HDFS to the namenode drive using the command:
    $HADOOP_HOME/bin/hadoop fs -copyFromLocal /rockout/*
 8. Examine or copy the results from the namenode.
@@ -135,7 +140,7 @@ Any other issues can be debugged using the logs located in $HADOOP_HOME/logs.
 ## HDFS and Map Reduce Job
 The text data from rockyou will be uploaded onto HDFS. From here, a
 python map script will be used to first process the text into
-sha256. Next, a reduce script will take the hash and attempt to crack
+SHA256. Next, a reduce script will take the hash and attempt to crack
 the string. The reduce script will detect ascii encoding and if found, 
 will print the hash and the string.
 
@@ -154,7 +159,12 @@ Note: T denotes the number of reducer threads used.
 
 # Discussion of Results
 The dictionary attack script completed successfully in each
-configuration. A dramatic increase in completion speed can be seen as
+configuration. When using more than one thread, the results appear in
+a number of part-N files where N denotes the number of threads used in
+the streaming command. The secret message "Ravioli Ravioli!" was found
+in the results of each run.
+
+A dramatic increase in completion speed can be seen as
 the number of nodes used increases along with the number of reducer
 threads used. Diminishing returns are observed once the number of
 reducer threads is increased beyond 12. This is likely due to the
@@ -164,8 +174,9 @@ resulting in an increase in time in the case of T=48.
 # Future Work and Improvements
 Python is a convenient language but is notoriously slow. The scripts
 could be optimized by using a generator instead of the "for line in
-stdin". The mapper and reducer could also be written in optimized C to
-see if additional speed increases could be achieved.
+stdin". The mapper and reducer could also be written in optimized C or
+a compiled language to see if additional speed increases could be
+achieved.
 
 # References and Helpful Links
 Description of the Hadoop streaming interface:
@@ -190,6 +201,6 @@ https://github.com/I-OMegaMan/dataIntensive/tree/main/project
 
 
 # Python Libraries used:
-cryptography, for aes256 encryption:
+cryptography, for AES256 encryption:
 https://cryptography.io/en/latest/
 
