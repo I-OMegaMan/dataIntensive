@@ -4,6 +4,8 @@ Matt Myers
 
 Roarke Myers
 
+4/24/2024
+
 # Introduction
 ## Hadoop AES Dictionary Attack
 This project is designed to test various cyber-security concepts using
@@ -14,12 +16,7 @@ https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz
 The database is a large set of previously hacked/leaked real user passwords and
 generated probable passwords. If you, the reader, look through the
 database, there is a high chance you will see one of your own
-passwords in the database. Note: This project originally used the
-larger rockyou2021 dataset
-(https://github.com/ohmybahgosh/RockYou2021.txt) but the original
-smaller rockyou.txt was used instead since it proved easier to load
-onto the test cluster and produces the same result as a larger
-dataset.
+passwords in the database.
 
 ## Objective
 Create a map reduce job which reads cracked passwords from a text
@@ -29,17 +26,17 @@ variety of situations to experiment with performance.
 
 ## Assumptions and Scenario
 A secret message was intercepted from a person of interest. Recon on
-the target person produced number of assumptions can be made about
+the target produced a number of assumptions that can be made about
 this secret message:
 
 1. The message contains ascii text.
-2. The AES initialization vector is zero (A VERY common security flaw).
+2. The AES initialization vector is zero.
 3. AES key selected for this encryption is based on the sha256 of a string in the rockyou password database.
 4. The data is within a single AES256 16 byte block.
 
 In practice this scenario is somewhat realistic since AES256 keys are
-often the sha256 of some string known by the programmer. Though is
-would be considered incredibly sloppy it is still common practice.
+often the sha256 of some string known by the programmer. This is
+considered an incredibly sloppy practice.
 
 ## About AES256 and SHA256
 AES256 is a symmetric encryption algorithm meaning it relies on a
@@ -51,7 +48,7 @@ keys.
 
 ## About Hadoop and Mapreduce
 Hadoop is an Apache foundation implementation of the map reduce
-algorithm (orginally by Google) paired with a distributed file system
+algorithm (originally by Google) paired with a distributed file system
 called HDFS (Hadoop Filesystem).  Hadoop allows for consumer grade
 computers to be joined together to form a powerful and robust
 distributed computing platform. Hadoop is written in the Java
@@ -71,17 +68,18 @@ the rockyou.txt and outputs the 32 byte result as a string into the
 reducer script. The reducer script takes the 32 byte SHA256 and
 attempts to crack the 16 byte encrypted message. Since the string is
 known to be ascii encoded, an ascii decode is attempted on the
-decrytped string. Any successful ascii decode result is printed as a
+decrypted string. Any successful ascii decode result is printed as a
 result. The output buffer is small enough that a human can visually
 inspect the decoded data to see if any message is human readable.
 
 ## Cluster Configuration
-The following configurations are used for this experiment:
-1. Single computer without hadoop
-2. 2 Node cluster with hadoop.
-3. 4 Node cluster with hadoop.
-4. 4 Node cluster with hadoop and different reducer thread sizes.
-
+The experiment was run in the following configurations:
+1. Single PC: A single computer running python and piping the mapper.py output to the reducer.py script.
+2. 2 Node cluster: A Hadoop Namenode with one datanode.
+3. 4 Node cluster: A Hadoop Namenode with three datanodes.
+4. 4 Nodes with Varying reducer threads: Increasing the number of
+   reducer threads.
+   
 # Setup Instructions
 ## Hardware Requirements
 1. Ubuntu 22.04 with root access.
@@ -94,7 +92,6 @@ The following configurations are used for this experiment:
    (namenode) to node0 and the workers to node1, node2, and node3
    respectively.
 7. Git installed on all hardware.
-
 
 ## Setup Procedure
 To avoid errors, follow the procedure in the exact order as shown:
@@ -134,8 +131,6 @@ Any other issues can be debugged using the logs located in $HADOOP_HOME/logs.
 1. Follow the steps above with the exception of adding each datanode host name to $HADOOP_HOME/etc/workers (steps 3-4).
 
 # Results
-The experiment was run in the following configurations
-
 
 ## HDFS and Map Reduce Job
 The text data from rockyou will be uploaded onto HDFS. From here, a
@@ -170,7 +165,7 @@ resulting in an increase in time in the case of T=48.
 Python is a convenient language but is notoriously slow. The scripts
 could be optimized by using a generator instead of the "for line in
 stdin". The mapper and reducer could also be written in optimized C to
-see if additional speed increases could be acheived.
+see if additional speed increases could be achieved.
 
 # References and Helpful Links
 Description of the Hadoop streaming interface:
