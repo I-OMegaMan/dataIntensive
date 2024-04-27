@@ -137,15 +137,6 @@ Any other issues can be debugged using the logs located in $HADOOP_HOME/logs.
 
 # Results
 
-## HDFS and Map Reduce Job
-The text data from rockyou will be uploaded onto HDFS. From here, a
-python map script will be used to first process the text into
-SHA256. Next, a reduce script will take the hash and attempt to crack
-the string. The reduce script will detect ascii encoding and if found, 
-will print the hash and the string.
-
-# Results
-
 | Configuration                   | Time to Complete |
 |---------------------------------|------------------|
 | Single computer (no hadoop)     | 30+ Minutes      |
