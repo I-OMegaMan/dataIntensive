@@ -6,21 +6,22 @@ Roarke Myers
 
 4/24/2024
 
-## Hadoop AES Dictionary Attack
-This project is designed to test various cyber-security concepts using
-a database of cracked passwords called rockyou.
-see:
-https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz
+## Hadoop Distributed Dictionary Attack: Overview
+This project performs a distributed dictionary attack on an AES256
+encrypted message using the Hadoop Filesystem and Map reduce
+framework. Different configurations are used to test how fast the
+setup can crack the secret message.
 
-The database is a large set of previously hacked/leaked real user passwords and
-generated probable passwords. If you, the reader, look through the
-database, there is a high chance you will see one of your own
-passwords in the database.
+The database used for the dictionary attack is a large set of
+previously hacked/leaked real user passwords called rockyou.txt
+(https://github.com/praetorian-inc/Hob0Rules/blob/master/wordlists/rockyou.txt.gz). The
+database is commonly used for password strength testing and
+pen-testing.
 
 ## Objective
 Create a map reduce job which reads cracked passwords from a text
-database and produces an output list of possible ascii encoded text
-within an aes256 encrypted block. The map reduce job will be run in a
+database and produces an output list of possible ASCII encoded text
+within an AES256 encrypted block. The map reduce job will be run in a
 variety of situations to experiment with performance.
 
 ## Assumptions and Scenario
@@ -28,7 +29,7 @@ A secret message was intercepted from a person of interest. Recon on
 the target produced a number of assumptions that can be made about
 this secret message:
 
-1. The message contains ascii text.
+1. The message contains ASCII text.
 2. The AES initialization vector is zero.
 3. AES key selected for this encryption is based on the sha256 of a string in the rockyou password database.
 4. The data is within a single AES256 16 byte block.
