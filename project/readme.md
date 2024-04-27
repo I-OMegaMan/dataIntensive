@@ -6,7 +6,6 @@ Roarke Myers
 
 4/24/2024
 
-# Introduction
 ## Hadoop AES Dictionary Attack
 This project is designed to test various cyber-security concepts using
 a database of cracked passwords called rockyou.
