@@ -55,24 +55,21 @@ assumptions that can be made about this secret message:
 3. AES key selected for this encryption is based on the SHA256 of a string in the rockyou password database.
 4. The data is within a single AES256 16 byte block.
 
-In practice this scenario is somewhat realistic since AES256 keys are
-often the SHA256 of some string known by the programmer. This is an
-incredibly sloppy practice but will allow this experiment to finish
-before the sun burns out.
+The listed items above allow the problem space of brute forcing a
+AES256 key to be dramatically reduced, and in practice are realistic,
+though incredibly sloppy.
 
 ## Mapper and Reducer Scripts
 A mapper and reducer python script were written to use the Hadoop
 streaming interface. Hadoop feeds each password string from
-rockyou.txt to the mapper script takes the SHA256 of each password in
-the rockyou.txt and outputs the 32 byte result as a string into the
-reducer script. 
-
-The reducer script takes the 32 byte SHA256 and
-attempts to crack the 16 byte encrypted message. Since the string is
-known to be ascii encoded, an ascii decode is attempted on the
-decrypted string. Any successful ascii decode result is printed as a
-result. The output buffer is small enough that a human can visually
-inspect the decoded data to see if any message is human readable.
+rockyou.txt to the mapper script which performs the SHA256 and prints
+the result. Hadoop feeds the resulting 32 byte key string to the
+reducer script which uses the key string to attempt to crack the 16
+byte encrypted message. Since the string is known to be ascii encoded,
+an ascii decode is attempted on the decrypted string. Any successful
+ascii decode result is printed as a result. The output buffer is small
+enough that a human can visually inspect the decoded data to see if
+any message is human readable.
 
 ## Cluster Configuration
 The experiment was run in the following configurations:
