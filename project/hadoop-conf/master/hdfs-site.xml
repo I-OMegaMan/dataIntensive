@@ -20,6 +20,5 @@
   <property>
     <name>dfs.namenode.name.dir</name>
     <value>/mydata/hadoop</value>
-	<!--   for homework 2, put the data in mydata -->
   </property>
 </configuration>

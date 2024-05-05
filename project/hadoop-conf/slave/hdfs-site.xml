@@ -19,7 +19,6 @@
 <configuration>
   <property>
     <name>dfs.datanode.data.dir</name>
-    <value>/mydata/hadoop</value>                                                            
-	<!--   for homework 2, put the data in mydata -->
+    <value>/mydata/hadoop</value>
   </property>
 </configuration>
