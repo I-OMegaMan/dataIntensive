@@ -123,8 +123,3 @@ export PATH=$JAVA_HOME/bin:$PATH
 #export SCALA_HOME=/usr/local/share/scala
 #export PATH=$SCALA_HOME/bin:$PATH
 export PDSH_RCMD_TYPE=ssh
-
-alias hdfs='$HADOOP_HOME/bin/hdfs'
-alias hadoop='$HADOOP_HOME/bin/hadoop'
-alias start-all='$HADOOP_HOME/sbin/start-all.sh'
-alias stop-all='$HADOOP_HOME/sbin/stop-all.sh'
