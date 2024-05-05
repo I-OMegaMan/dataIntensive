@@ -9,6 +9,7 @@
 #on cloudlab.
 
 CONFIG_PATH=~/dataIntensive/spark/hadoop-conf
+HADOOP_FS_PATH=~/mydata
 
 if [ "$#" -eq 1 ]; then
     # select master or slave directory
@@ -90,13 +91,13 @@ if ! [ -f ~/scala-2.12.12.deb ]; then
 fi
 
 
-sudo chmod 777 /mydata
-if [ -d /mydata/hadoop ]; then
-    rm -R /mydata/hadoop
+sudo chmod 777 $HADOOP_FS_PATH
+if [ -d $HADOOP_FS_PATH/hadoop ]; then
+    rm -R $HADOOP_FS_PATH/hadoop
 fi
-mkdir -p /mydata/hadoop         # for homework 2, put data in /mydata, which requires root privilege to be created
-echo "created /mydata/hadoop"
-sudo chmod 777 /mydata/hadoop
+mkdir -p $HADOOP_FS_PATH/hadoop
+echo "created $HADOOP_FS_PATH/hadoop"
+sudo chmod 777 $HADOOP_FS_PATH/hadoop
 # ensure the mapper and reducer scripts have the correct permissions
 sudo chmod 777 ~/dataIntensive/project/python/mapper.py
 sudo chmod 777 ~/dataIntensive/project/python/reducer.py
@@ -105,10 +106,10 @@ sudo chmod 777 ~/dataIntensive/project/python/reducer.py
 # configure master if needed
 if [ "$1" = "master" ]; then
     #if the dataset has not been downloaded, download it
-    if [ -d /mydata/rockyou ]; then
-        rm -R /mydata/rockyou
-        mkdir -p /mydata/rockyou
-        cd /mydata/rockyou
+    if [ -d $HADOOP_FS_PATH/rockyou ]; then
+        rm -R $HADOOP_FS_PATH/rockyou
+        mkdir -p $HADOOP_FS_PATH/rockyou
+        cd $HADOOP_FS_PATH/rockyou
         wget https://github.com/praetorian-inc/Hob0Rules/raw/master/wordlists/rockyou.txt.gz
         gunzip ./rockyou.txt.gz
     fi
@@ -116,5 +117,5 @@ if [ "$1" = "master" ]; then
     $HADOOP_HOME/bin/hdfs namenode -format
     $HADOOP_HOME/sbin/start-dfs.sh
     # upload data to hdfs
-    $HADOOP_HOME/bin/hadoop fs -copyFromLocal /mydata/rockyou/rockyou.txt /
+    $HADOOP_HOME/bin/hadoop fs -copyFromLocal $HADOOP_FS_PATH/rockyou/rockyou.txt /
 fi
